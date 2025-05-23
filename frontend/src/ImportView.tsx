@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { importRepositories } from './api';
 import './App.css';
 
 const ImportView: React.FC = () => {
@@ -22,21 +23,11 @@ const ImportView: React.FC = () => {
         setLoading(true);
         setError('');
 
-        const formData = new FormData();
-        formData.append('file', file);
-
         try {
-            const res = await fetch('http://localhost:5000/api/import', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (!res.ok) throw new Error('Failed to import data');
-
-            const data = await res.json();
+            const data = await importRepositories(file); // Usa a função centralizada
             setRepos(data);
         } catch (err: any) {
-            setError(err.message);
+            setError(err.message || 'Failed to import data');
         } finally {
             setLoading(false);
         }
