@@ -1,23 +1,31 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
+import { Repository } from "../models/repository";
+import { sendRepoImportJob } from "../queue/rabbitmq";
+
 export class IndexController {
-    public async getExample(req: Request, res: Response) {
-        res.json({ message: "This is an example response from the IndexController." });
+  public async home(req: Request, res: Response) {
+    const data = { message: "Welcome to the home page!" };
+    res.json(data);
+  }
+
+  public async importRepositories(req: Request, res: Response) {
+    const { repositories } = req.body;
+    if (!repositories || !Array.isArray(repositories)) {
+      return res.status(400).json({ message: "Invalid data format" });
     }
 
-    public async postExample(req: Request, res: Response) {
-        const data = req.body;
-        res.status(201).json({ message: "Data received", data });
+    sendRepoImportJob(repositories);
+    res
+      .status(202)
+      .json({ message: "Importing repositories, processing in background." });
+  }
+
+  public async getImportedRepositories(req: Request, res: Response) {
+    try {
+      const repositories = await Repository.find();
+      res.json(repositories);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching imported repositories" });
     }
-
-     public async home(req: Request, res: Response) {
-        res.send("Welcome to the home page!");
-    }
-
-    public async getData(req: Request, res: Response) {
-        const data = { message: "This is some sample data." };
-        res.json(data);
-    }
-
-    // Add more methods as needed for handling different API endpoints
-
+  }
 }

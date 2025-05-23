@@ -1,31 +1,50 @@
 # Repo Ranger App
 
+RepoRanger is a full-stack application designed to facilitate the import and viewing of GitHub repositories. The application consists of a backend built with Express and TypeScript, and a frontend developed using React.
+
+## Features
+
+- Search for GitHub users and view their repositories.
+- Import repositories from a CSV file and display them in a table.
+- Background processing of imported data using RabbitMQ.
+- Persistent storage of repository data in a MariaDB database.
+
 ## Project Structure
 
 ```
-fullstack-app
+RepoRanger
 ├── backend
 │   ├── src
-│   │   ├── app.ts
+│   │   ├── app.ts                # Entry point of the backend application
 │   │   ├── controllers
-│   │   │   └── index.ts
+│   │   │   └── index.ts          # Handles API requests
+│   │   ├── jobs
+│   │   │   └── repoImportJob.ts  # Processes imported repository data
+│   │   ├── queue
+│   │   │   └── rabbitmq.ts       # Sets up RabbitMQ connection
 │   │   ├── routes
-│   │   │   └── index.ts
+│   │   │   └── index.ts          # API routes setup
+│   │   ├── models
+│   │   │   └── repository.ts      # Repository model for the database
 │   │   └── types
-│   │       └── index.ts
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── Dockerfile
+│   │       └── index.ts          # Type definitions
+│   ├── package.json               # Backend dependencies and scripts
+│   ├── tsconfig.json              # TypeScript configuration for backend
+│   └── README.md                  # Documentation for the backend
 ├── frontend
 │   ├── src
-│   │   ├── App.tsx
-│   │   └── index.tsx
-│   ├── public
-│   │   └── index.html
-│   ├── package.json
-│   └── Dockerfile
-├── docker-compose.yml
-└── README.md
+│   │   ├── App.tsx                # Main component for the frontend
+│   │   ├── ImportView.tsx         # Component for importing and viewing repositories
+│   │   ├── index.tsx              # Entry point of the frontend application
+│   │   ├── api
+│   │   │   └── index.ts           # API calls to the backend
+│   │   └── types
+│   │       └── index.ts           # Type definitions for frontend
+│   ├── package.json               # Frontend dependencies and scripts
+│   ├── tsconfig.json              # TypeScript configuration for frontend
+│   └── README.md                  # Documentation for the frontend
+├── docker-compose.yml              # Docker configuration for the application
+└── README.md                      # Main documentation for the project
 ```
 
 ## Setup Instructions
@@ -33,13 +52,9 @@ fullstack-app
 1. **Clone the repository:**
    ```
    git clone <repository-url>
-   cd repo-ranger
+   cd RepoRanger
    ```
 2. **Running the Application:**
-   - Navigate back to the root of the project:
-     ```
-     cd ..
-     ```
    - Start the application using Docker Compose:
      ```
      docker-compose up --build

@@ -1,5 +1,6 @@
 import express from 'express';
 import { setRoutes } from './routes/index';
+import { connectRabbitMQ } from './queue/rabbitmq';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -8,7 +9,9 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Set up routes
+connectRabbitMQ();
+
+// routes
 setRoutes(app);
 
 app.listen(PORT, () => {

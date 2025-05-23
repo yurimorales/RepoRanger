@@ -11,6 +11,9 @@ services:
       - backend
     environment:
       - NODE_OPTIONS=--openssl-legacy-provider
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
   backend:
     build:
@@ -24,6 +27,9 @@ services:
     depends_on:
       - db
       - rabbitmq
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
 
   db:
     image: mariadb:latest
