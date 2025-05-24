@@ -4,7 +4,7 @@ const API_URL = "http://localhost:5000/api";
 
 export const importRepositories = async (file: File) => {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("filename", file);
 
   const response = await axios.post(`${API_URL}/import`, formData, {
     headers: {

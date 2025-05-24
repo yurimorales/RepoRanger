@@ -1,40 +1,29 @@
-import { Channel, Connection } from 'amqplib';
-import { Repository } from '../models/repository';
-import { connectRabbitMQ } from '../queue/rabbitmq';
-
-const QUEUE_NAME = 'repo_import_queue';
+import { sendRepoImportJob } from "../queue/rabbitmq";
+import { Repository } from "../models/repository";
 
 export const importRepoJob = async (repoData: any) => {
-    const connection: Connection = await connectRabbitMQ();
-    const channel: Channel = await connection.createChannel();
-
-    try {
-        await channel.assertQueue(QUEUE_NAME, { durable: true });
-        await channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(repoData)), {
-            persistent: true,
-        });
-        console.log('Job sent to queue:', repoData);
-    } catch (error) {
-        console.error('Error sending job to queue:', error);
-    } finally {
-        await channel.close();
-        await connection.close();
-    }
+  try {
+    await sendRepoImportJob(repoData);
+    console.log("Job sent to queue:", repoData);
+  } catch (error) {
+    console.error("Error sending job to queue:", error);
+  }
 };
 
-export const processRepoImportJob = async (msg: any) => {
-    const repoData = JSON.parse(msg.content.toString());
-    const { name, owner, stargazers_count } = repoData;
+export const processRepoImportJob = async (data: any) => {
+  const repositories = Array.isArray(data) ? data : [data];
 
+  for (const repo of repositories) {
+    const { name, owner, stars } = repo;
     try {
-        const repository = new Repository({
-            name,
-            owner,
-            stargazers_count,
-        });
-        await repository.save();
-        console.log('Repository saved:', repository);
+      await Repository.create({
+        name,
+        owner,
+        stars,
+      });
+      console.log("Repository saved:", name);
     } catch (error) {
-        console.error('Error saving repository:', error);
+      console.error("Error saving repository:", name, error);
     }
+  }
 };

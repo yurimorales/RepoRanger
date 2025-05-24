@@ -1,81 +1,49 @@
-# Repo Ranger App
+# RepoRanger App
 
-RepoRanger is a full-stack application designed to facilitate the import and viewing of GitHub repositories. The application consists of a backend built with Express and TypeScript, and a frontend developed using React.
+RepoRanger é uma aplicação full-stack desenvolvida para facilitar a importação e visualização de repositórios do GitHub, com foco em automação, integração e análise de dados de repositórios. O projeto foi criado para servir como base de estudos e demonstração de integração entre frontend, backend, mensageria e banco de dados relacional.
+
+## Contexto do Projeto
+
+O objetivo do RepoRanger é permitir que usuários busquem repositórios de um usuário do GitHub, exportem esses dados em CSV e realizem a importação desses repositórios para uma base de dados própria. O processamento da importação é feito de forma assíncrona, utilizando RabbitMQ, garantindo escalabilidade e desacoplamento entre as etapas de upload e persistência dos dados.
 
 ## Features
 
-- Search for GitHub users and view their repositories.
-- Import repositories from a CSV file and display them in a table.
-- Background processing of imported data using RabbitMQ.
-- Persistent storage of repository data in a MariaDB database.
+- Buscar repositórios de usuários do GitHub.
+- Exportar a lista de repositórios para um arquivo CSV.
+- Importar repositórios a partir de um arquivo CSV.
+- Processamento assíncrono da importação utilizando RabbitMQ.
+- Armazenamento persistente dos dados em um banco MariaDB.
+- Visualização dos repositórios importados em uma tabela.
 
-## Project Structure
+## Instruções de Instalação
 
-```
-RepoRanger
-├── backend
-│   ├── src
-│   │   ├── app.ts                # Entry point of the backend application
-│   │   ├── controllers
-│   │   │   └── index.ts          # Handles API requests
-│   │   ├── jobs
-│   │   │   └── repoImportJob.ts  # Processes imported repository data
-│   │   ├── queue
-│   │   │   └── rabbitmq.ts       # Sets up RabbitMQ connection
-│   │   ├── routes
-│   │   │   └── index.ts          # API routes setup
-│   │   ├── models
-│   │   │   └── repository.ts      # Repository model for the database
-│   │   └── types
-│   │       └── index.ts          # Type definitions
-│   ├── package.json               # Backend dependencies and scripts
-│   ├── tsconfig.json              # TypeScript configuration for backend
-│   └── README.md                  # Documentation for the backend
-├── frontend
-│   ├── src
-│   │   ├── App.tsx                # Main component for the frontend
-│   │   ├── ImportView.tsx         # Component for importing and viewing repositories
-│   │   ├── index.tsx              # Entry point of the frontend application
-│   │   ├── api
-│   │   │   └── index.ts           # API calls to the backend
-│   │   └── types
-│   │       └── index.ts           # Type definitions for frontend
-│   ├── package.json               # Frontend dependencies and scripts
-│   ├── tsconfig.json              # TypeScript configuration for frontend
-│   └── README.md                  # Documentation for the frontend
-├── docker-compose.yml              # Docker configuration for the application
-└── README.md                      # Main documentation for the project
-```
-
-## Setup Instructions
-
-1. **Clone the repository:**
+1. **Clone o repositório:**
    ```
-   git clone <repository-url>
+   git clone <url-do-repositório>
    cd RepoRanger
    ```
-2. **Running the Application:**
-   - Start the application using Docker Compose:
+2. **Executando a aplicação:**
+   - Inicie todos os serviços utilizando Docker Compose:
      ```
      docker-compose up --build
      ```
 
-## Services
+## Serviços
 
-- **Backend:** The TypeScript backend service that handles API requests.
-- **Frontend:** The React frontend service that serves the user interface.
-- **MariaDB:** The database service for storing application data.
-- **RabbitMQ:** The messaging service for handling asynchronous communication.
+- **Backend:** Serviço em TypeScript com Express, responsável pelas APIs e integração com RabbitMQ e MariaDB.
+- **Frontend:** Aplicação React para interação com o usuário.
+- **MariaDB:** Banco de dados relacional para armazenamento dos repositórios.
+- **RabbitMQ:** Serviço de mensageria para processamento assíncrono das importações.
 
-## Usage
+## Uso
 
-- Access the frontend application at `http://localhost:3000`.
-- The backend API can be accessed at `http://localhost:5000/api`.
+- Acesse a aplicação frontend através do endereço:  `http://localhost:3000`.
+- As APIs do backend estão disponíveis no endereço: `http://localhost:5000/api`.
 
-## Contributing
+## Contribuição
 
-Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests com melhorias e correções.
 
-## License
+## Licença
 
-This project is licensed under the MIT License.
+Este projeto está licenciado sob a licença MIT.
